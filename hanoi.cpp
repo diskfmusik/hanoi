@@ -29,6 +29,14 @@ void Draw()
 }
 
 
+void Sort(int _from[], int _to[])
+{
+	int temp = *_from;
+	*_from = *_to;
+	*_to = temp;
+}
+
+
 void Move(int _from[], int _to[], int _other[], int _num)
 {
 
@@ -39,16 +47,12 @@ void Move(int _from[], int _to[], int _other[], int _num)
 	else if (_num == 1)
 	{
 		/* ^‚ñ’†‚É‚Á‚Ä‚¢‚­‚â‚Â */
-		int temp = _from[poleSize - 2];
-		_from[poleSize - 2] = _to[poleSize - 1]/* 0 */;
-		_to[poleSize - 1] = temp;
+		Sort(&_from[poleSize - 2], &_to[poleSize - 1]);
 
 		/* other ‚É”ğ‚¯‚Ä‚¢‚½‰~”Õ‚ğ to ‚É–ß‚· */
 		for (int i = 0; i < poleSize - 2; i++)
 		{
-			int temp = _other[2 + i];
-			_other[2 + i] = _to[(poleSize - 2) - i];
-			_to[(poleSize - 2) - i] = temp;
+			Sort(&_other[2 + i], &_to[(poleSize - 2) - i]);
 		}
 	}
 	else
@@ -67,15 +71,13 @@ void Move(int _from[], int _to[], int _other[], int _num)
 		--otherIndex; // —v‘f”‚Æ‚µ‚Äˆµ‚¤ˆ×
 
 
-		int temp = _from[fromIndex];
-		_from[fromIndex] = _other[otherIndex];
-		_other[otherIndex] = temp;
+		Sort(&_from[fromIndex], &_other[otherIndex]);
 
 
 		Move(_from, _to, _other, _num - 1);
 	}
 
-} // void move(int _from[], int _to[], int _num)
+} // void Move(int _from[], int _to[], int _other[], int _num)
 
 
 void main()
@@ -94,6 +96,17 @@ void main()
 	Move(a, b, c, poleSize - 1);
 	Draw();
 	getchar();
+
+	/* ˆê”Ô‰º‚Ì‰~”Õ */
+	Sort(&a[poleSize - 1], &c[poleSize - 1]);
+	Draw();
+	getchar();
+
+
+	//Move(b, a, c, poleSize - 2);
+	//Draw();
+	//getchar();
+
 
 
 	getchar();
