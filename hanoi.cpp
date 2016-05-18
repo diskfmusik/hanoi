@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-const int poleSize = 3; // â~î’ÇÃêî
+const int poleSize = 7; // â~î’ÇÃêî
 
 int a[poleSize];
 int b[poleSize];
@@ -37,20 +37,20 @@ void Sort(int _from[], int _to[])
 }
 
 
-void Move(int _from[], int _to[], int _other[], int _num)
+void Move(int _from[], int _to[], int _other[], int _moveNum, int _startNum)
 {
 
-	if (_num < 1)
+	if (_moveNum < 1)
 	{
 		return;
 	}
-	else if (_num == 1)
+	else if (_moveNum == 1)
 	{
-		/* ê^ÇÒíÜÇ…éùÇ¡ÇƒÇ¢Ç≠Ç‚Ç¬ */
+		// to ÇÃàÍî‘â∫Ç…íuÇ≠â~î’
 		Sort(&_from[poleSize - 2], &_to[poleSize - 1]);
 
 		/* other Ç…îÇØÇƒÇ¢ÇΩâ~î’Ç to Ç…ñﬂÇ∑ */
-		for (int i = 0; i < poleSize - 2; i++)
+		for (int i = 0; i < _startNum - 1; i++)
 		{
 			Sort(&_other[2 + i], &_to[(poleSize - 2) - i]);
 		}
@@ -74,10 +74,10 @@ void Move(int _from[], int _to[], int _other[], int _num)
 		Sort(&_from[fromIndex], &_other[otherIndex]);
 
 
-		Move(_from, _to, _other, _num - 1);
+		Move(_from, _to, _other, _moveNum - 1, _startNum);
 	}
 
-} // void Move(int _from[], int _to[], int _other[], int _num)
+} // void Move(int _from[], int _to[], int _other[], int _moveNum, int _startNum)
 
 
 void main()
@@ -87,26 +87,43 @@ void main()
 	{
 		a[i] = i + 1;
 	}
-
-
 	Draw();
 	getchar();
 
 
-	Move(a, b, c, poleSize - 1);
+	Move(a, b, c, poleSize - 1, poleSize - 1);
 	Draw();
 	getchar();
 
-	/* àÍî‘â∫ÇÃâ~î’ */
 	Sort(&a[poleSize - 1], &c[poleSize - 1]);
 	Draw();
 	getchar();
 
 
-	//Move(b, a, c, poleSize - 2);
+	Move(b, a, c, poleSize - 2, poleSize - 2);
+	Draw();
+	getchar();
+
+	Sort(&b[poleSize - 1], &c[poleSize - 2]);
+	Draw();
+	getchar();
+
+
+	// Ç±ÇÍÇ≈Ç¢Ç¢ÇÃÇ©ÅH
+#if 1
+	for (int i = 0; i < poleSize - 2; i++)
+	{
+		Sort(&a[(poleSize - 1) - i], &c[(poleSize - 3) - i]);
+	}
+	Draw();
+	getchar();
+#endif
+
+#if 0 // ????
+	//Move(a, c, b, poleSize - 3, poleSize - 3);
 	//Draw();
 	//getchar();
-
+#endif
 
 
 	getchar();
