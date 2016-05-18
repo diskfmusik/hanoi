@@ -36,6 +36,21 @@ void Move(int _from[], int _to[], int _other[], int _num)
 	{
 		return;
 	}
+	else if (_num == 1)
+	{
+		/* ^‚ñ’†‚É‚Á‚Ä‚¢‚­‚â‚Â */
+		int temp = _from[poleSize - 2];
+		_from[poleSize - 2] = _to[poleSize - 1]/* 0 */;
+		_to[poleSize - 1] = temp;
+
+		/* other ‚É”ğ‚¯‚Ä‚¢‚½‰~”Õ‚ğ to ‚É–ß‚· */
+		for (int i = 0; i < poleSize - 2; i++)
+		{
+			int temp = _other[2 + i];
+			_other[2 + i] = _to[(poleSize - 2) - i];
+			_to[(poleSize - 2) - i] = temp;
+		}
+	}
 	else
 	{
 		int fromSize = GetSizeInPole(_from);
@@ -48,13 +63,13 @@ void Move(int _from[], int _to[], int _other[], int _num)
 		int otherSize = GetSizeInPole(_other);
 		//printf("%d\n", toSize);
 
-		int toIndex = poleSize - otherSize;
-		--toIndex; // —v‘f”‚Æ‚µ‚Äˆµ‚¤ˆ×
+		int otherIndex = poleSize - otherSize;
+		--otherIndex; // —v‘f”‚Æ‚µ‚Äˆµ‚¤ˆ×
 
 
 		int temp = _from[fromIndex];
-		_from[fromIndex] = _other[toIndex];
-		_other[toIndex] = temp;
+		_from[fromIndex] = _other[otherIndex];
+		_other[otherIndex] = temp;
 
 
 		Move(_from, _to, _other, _num - 1);
@@ -76,7 +91,7 @@ void main()
 	getchar();
 
 
-	Move(a, b, c, 2);
+	Move(a, b, c, poleSize - 1);
 	Draw();
 	getchar();
 
