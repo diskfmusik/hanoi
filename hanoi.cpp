@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-const int poleSize = 7; // â~î’ÇÃêî
+const int poleSize = 3; // â~î’ÇÃêî
 
 int a[poleSize];
 int b[poleSize];
@@ -22,14 +22,15 @@ const int GetSizeInPole(const int _ary[])
 
 void Draw()
 {
-	for (int y = 0; y < poleSize; y++)
+	for (int y = poleSize - 1; y >= 0; y--)
 	{
 		printf("%d  %d  %d\n", a[y], b[y], c[y]);
 	}
+	printf("\n");
 }
 
 
-void Sort(int _from[], int _to[])
+void Swap(int _from[], int _to[])
 {
 	int temp = *_from;
 	*_from = *_to;
@@ -37,47 +38,48 @@ void Sort(int _from[], int _to[])
 }
 
 
-void Move(int _from[], int _to[], int _other[], int _moveNum, int _startNum)
+void Move(int _from[], int _to[], int _work[], int _n)
 {
 
-	if (_moveNum < 1)
+	if (_n < 1)
 	{
 		return;
 	}
-	else if (_moveNum == 1)
+	else if (_n == 1)
 	{
-		// to ÇÃàÍî‘â∫Ç…íuÇ≠â~î’
-		Sort(&_from[poleSize - 2], &_to[poleSize - 1]);
+		int fromSize = GetSizeInPole(_from);
+		--fromSize;
+		//printf("%d\n", fromSize);
 
-		/* other Ç…îÇØÇƒÇ¢ÇΩâ~î’Ç to Ç…ñﬂÇ∑ */
-		for (int i = 0; i < _startNum - 1; i++)
-		{
-			Sort(&_other[2 + i], &_to[(poleSize - 2) - i]);
-		}
+		int toSize = GetSizeInPole(_to);
+
+		Swap(&_from[fromSize], &_to[toSize]);
+
+		Draw();
 	}
 	else
 	{
+		Move(_from, _work, _to, _n - 1);
+
+
 		int fromSize = GetSizeInPole(_from);
+		--fromSize;
 		//printf("%d\n", fromSize);
 
-		// 0 ÇÕ Ç†ÇËìæÇ»Ç¢ÅiìnÇπÇÈÇ‡ÇÃÇ™ñ≥Ç¢Ç©ÇÁÅj
-		int fromIndex = poleSize - fromSize;
+
+		int toSize = GetSizeInPole(_to);
 
 
-		int otherSize = GetSizeInPole(_other);
-		//printf("%d\n", toSize);
-
-		int otherIndex = poleSize - otherSize;
-		--otherIndex; // óvëfêîÇ∆ÇµÇƒàµÇ§à◊
+		Swap(&_from[fromSize], &_to[toSize]);
 
 
-		Sort(&_from[fromIndex], &_other[otherIndex]);
+		Draw();
 
 
-		Move(_from, _to, _other, _moveNum - 1, _startNum);
+		Move(_work, _to, _from, _n - 1);
 	}
 
-} // void Move(int _from[], int _to[], int _other[], int _moveNum, int _startNum)
+} // void Move(int _from[], int _to[], int _work[], int _n)
 
 
 void main()
@@ -85,45 +87,14 @@ void main()
 	// â~î’ÇÃèâä˙ç¿ïW
 	for (int i = 0; i < poleSize; i++)
 	{
-		a[i] = i + 1;
+		a[i] = poleSize - i;
 	}
 	Draw();
 	getchar();
 
 
-	Move(a, b, c, poleSize - 1, poleSize - 1);
-	Draw();
+	Move(a, c, b, poleSize);
 	getchar();
-
-	Sort(&a[poleSize - 1], &c[poleSize - 1]);
-	Draw();
-	getchar();
-
-
-	Move(b, a, c, poleSize - 2, poleSize - 2);
-	Draw();
-	getchar();
-
-	Sort(&b[poleSize - 1], &c[poleSize - 2]);
-	Draw();
-	getchar();
-
-
-	// Ç±ÇÍÇ≈Ç¢Ç¢ÇÃÇ©ÅH
-#if 1
-	for (int i = 0; i < poleSize - 2; i++)
-	{
-		Sort(&a[(poleSize - 1) - i], &c[(poleSize - 3) - i]);
-	}
-	Draw();
-	getchar();
-#endif
-
-#if 0 // ????
-	//Move(a, c, b, poleSize - 3, poleSize - 3);
-	//Draw();
-	//getchar();
-#endif
 
 
 	getchar();
